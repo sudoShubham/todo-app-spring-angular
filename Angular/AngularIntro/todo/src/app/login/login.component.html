@@ -1,0 +1,19 @@
+<div class="container">
+  <h3>Login to continue home page.</h3>
+  <hr />
+  <div class="alert alert-warning" *ngIf="invalidLogin">{{ errorMessage }}</div>
+
+  <div>
+    <label for="name">Username:</label>
+
+    <input id="name" type="text" name="username" [(ngModel)]="username" />
+
+    <label for="pass">Password:</label>
+    <input id="pass" type="password" name="password" [(ngModel)]="password" />
+
+    <!-- <button class="btn btn-success" (click)="handleLogin()">Login</button> -->
+    <button class="btn btn-success" (click)="handleBasicAuthLogin()">
+      Login
+    </button>
+  </div>
+</div>

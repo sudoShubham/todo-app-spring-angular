@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>Welcome</h2>
+  <div>
+    Hi {{ name }}, Welcome to todos.
+    <p>
+      <a routerLink="/todos">See Todos</a>
+    </p>
+  </div>
+</div>
+<hr />
+
+<div class="container">
+  <p>Click here to get customized welcome message.</p>
+  <p>
+    <button
+      (click)="getWelcomeMessageWithPathVariable()"
+      class="btn btn-success"
+    >
+      Get Welcome Message
+    </button>
+  </p>
+</div>
+
+<div class="container">
+  <p *ngIf="msg">Message : {{ msg }}</p>
+</div>
