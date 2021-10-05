@@ -1,6 +1,6 @@
+import { TodoDataService } from './../service/data/todo-data.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TodoDataService } from '../service/data/todo-data.service';
 
 export class Todo {
   constructor(
@@ -8,9 +8,10 @@ export class Todo {
     public description: string,
     public done: boolean,
     public targetDate: Date
-  ) { }
-}
+  ){
 
+  }
+}
 
 @Component({
   selector: 'app-list-todos',
@@ -19,43 +20,59 @@ export class Todo {
 })
 export class ListTodosComponent implements OnInit {
 
-  todos: any = []
-  message: string = ""
+  todos: Todo[]
 
+  message: string
 
-  constructor(private todoService: TodoDataService, private router: Router) { }
+  // = [
+  //   new Todo(1, 'Learn to Dance', false, new Date()),
+  //   new Todo(2, 'Become an Expert at Angular', false, new Date()),
+  //   new Todo(3, 'Visit India', false, new Date())
+  //   // {id : 1, description : },
+  //   // {id : 2, description : ''},
+  //   // {id : 3, description : 'Visit India'}
+  // ]
 
-  ngOnInit(): void {
-    this.refreshTodos()
+  // todo = {
+  //     id : 1,
+  //     description: 'Learn to Dance'
+  // }
 
+  constructor(
+    private todoService:TodoDataService,
+    private router : Router
+  ) { }
+
+  ngOnInit() {
+    this.refreshTodos();
   }
 
-
-  refreshTodos() {
-    this.todoService.retriveAllTodos('sudoRoot').subscribe(res => {
-      this.todos = res;
-      console.log(res);
-    })
+  refreshTodos(){
+    this.todoService.retrieveAllTodos('in28minutes').subscribe(
+      response => {
+        console.log(response);
+        this.todos = response;
+      }
+    )
   }
 
-  updateToDo(id: any) {
-    console.log(id)
-    this.router.navigate(['todos', id])
+  deleteTodo(id) {
+    console.log(`delete todo ${id}` )
+    this.todoService.deleteTodo('in28minutes', id).subscribe (
+      response => {
+        console.log(response);
+        this.message = `Delete of Todo ${id} Successful!`;
+        this.refreshTodos();
+      }
+    )
   }
 
-  deleteToDo(id: any) {
-    this.todoService.deleteTodo('sudoRoot', id).subscribe(res => {
-      console.log(res)
-      this.refreshTodos()
-      this.message = "Delete successful!"
-    }, err => {
-      console.log(err)
-    })
+  updateTodo(id) {
+    console.log(`update ${id}`)
+    this.router.navigate(['todos',id])
   }
 
   addTodo() {
-    this.router.navigate(['todos', -1])
+    this.router.navigate(['todos',-1])
   }
-
-
 }

@@ -5,26 +5,25 @@ import { Injectable } from '@angular/core';
 })
 export class HardcodedAuthenticationService {
 
-
-
   constructor() { }
 
-  authenticate(username: string, password: string) {
-    if (username === 'sudoRoot' && password === 'shubham') {
-      sessionStorage.setItem('authenticatedUser', username)
-      return true
+  authenticate(username, password) {
+    //console.log('before ' + this.isUserLoggedIn());
+    if(username==="in28minutes" && password === 'dummy') {
+      sessionStorage.setItem('authenticaterUser', username);
+      //console.log('after ' + this.isUserLoggedIn());
+      return true;
     }
     return false;
   }
 
-
   isUserLoggedIn() {
-    let user = sessionStorage.getItem('authenticatedUser')
+    let user = sessionStorage.getItem('authenticaterUser')
     return !(user === null)
   }
 
-  logOut() {
-    sessionStorage.removeItem('authenticatedUser')
+  logout(){
+    sessionStorage.removeItem('authenticaterUser')
   }
 
 }

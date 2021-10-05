@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TodoDataService } from './../service/data/todo-data.service';
+import { Component, OnInit } from '@angular/core';
 import { Todo } from '../list-todos/list-todos.component';
-import { TodoDataService } from '../service/data/todo-data.service';
 
 @Component({
   selector: 'app-todo',
@@ -10,42 +10,47 @@ import { TodoDataService } from '../service/data/todo-data.service';
 })
 export class TodoComponent implements OnInit {
 
-  id: any = null;
-  todo: any = null;
+  id:number
+  todo: Todo
 
-  constructor(private todoService: TodoDataService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private todoService: TodoDataService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
-  ngOnInit(): void {
-    this.id = this.route.snapshot.params['id']
-    this.todo = new Todo(this.id, "", true, new Date())
-
-    if (this.id != -1) {
-      this.todoService.retriveTodo('sudoRoot', this.id).subscribe(res => {
-        this.todo = res;
-      }, err => {
-        console.log(err)
-      })
+  ngOnInit() {
+    
+    this.id = this.route.snapshot.params['id'];
+    
+    this.todo = new Todo(this.id,'',false,new Date());
+    
+    if(this.id!=-1) {
+      this.todoService.retrieveTodo('in28minutes', this.id)
+          .subscribe (
+            data => this.todo = data
+          )
     }
-
   }
 
-
   saveTodo() {
-
-    if (this.id == -1) {
-      this.todoService.createTodo('sudoRoot', this.todo).subscribe(res => {
-        console.log(res)
-        this.router.navigate(['todos'])
-      })
+    if(this.id == -1) { //=== ==
+      this.todoService.createTodo('in28minutes', this.todo)
+          .subscribe (
+            data => {
+              console.log(data)
+              this.router.navigate(['todos'])
+            }
+          )
     } else {
-      this.todoService.updateTodo("sudoRoot", this.id, this.todo).subscribe(res => {
-        console.log(res);
-        this.router.navigate(['todos'])
-      }, err => {
-        console.log(err)
-      })
+      this.todoService.updateTodo('in28minutes', this.id, this.todo)
+          .subscribe (
+            data => {
+              console.log(data)
+              this.router.navigate(['todos'])
+            }
+          )
     }
-
   }
 
 }
